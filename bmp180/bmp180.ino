@@ -4,6 +4,9 @@
 
 Adafruit_BMP280 bmp; // I2C
 
+// Настройка давления на уровне моря (в hPa):
+#define SEALEVELPRESSURE_HPA (1013.25)
+
 void setup() {
   Serial.begin(9600);
   while (!Serial); // Wait for serial port to open (for some boards)
@@ -18,12 +21,16 @@ void setup() {
 
 void loop() {
   Serial.print(F("Pressure = "));
-  Serial.print(bmp.readPressure() / 100.0F);  // Pressure in hPa
+  Serial.print(bmp.readPressure() / 100.0F);  // hPa
   Serial.print(" hPa\t");
 
   Serial.print(F("Temperature = "));
-  Serial.print(bmp.readTemperature());       // Temperature in °C
-  Serial.println(" °C");
+  Serial.print(bmp.readTemperature());       // °C
+  Serial.print(" °C\t");
+
+  Serial.print(F("Altitude = "));
+  Serial.print(bmp.readAltitude(SEALEVELPRESSURE_HPA)); // метры
+  Serial.println(" m");
 
   delay(2000);
 }
